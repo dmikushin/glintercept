@@ -74,5 +74,29 @@ Direct3D
 * PIX (part of DirectX SDK)
 * [3DRipperDX](http://www.deep-shadows.com/hax/3DRipperDX.htm)
 
+## Building from source using CMake
 
+```
+git clone https://github.com/dtrebilco/glintercept.git
+cd glintercept
+mkdir build
+cd build
+cmake ../src/WorkSpaces ..
+```
+
+Then open & build the generated Visual Studio solution on Windows, or build with `make -j12` on Linux.
+
+In order to build for 64-bit on Windows, add `-DCMAKE_GENERATOR_PLATFORM=x64`:
+
+```
+cmake -DCMAKE_GENERATOR_PLATFORM=x64 ../src/WorkSpaces
+```
+
+In order to use particular python installation, specify it with `-DPYTHON_EXECUTABLE`:
+
+```
+cmake -DPYTHON_EXECUTABLE=C:/Python27/python.exe ../src/WorkSpaces
+```
+
+Note on Windows while configuring for Visual Studio, CMake may occasionally select `C:\Cygwin64\bin\python` from Cygwin installation, which is a symbolic link and does not work outside Cygwin. In this case, please select `C:\Cygwin64\bin\python2.7.exe` or another Windows-based Python installation manually.
 
