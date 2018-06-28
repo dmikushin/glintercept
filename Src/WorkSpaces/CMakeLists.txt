@@ -85,6 +85,8 @@ file(GLOB_RECURSE CORONA_SOURCES
 	"../../3rdParty/Corona-1.0.2-Static/src/*.c"
 	"../../3rdParty/Corona-1.0.2-Static/src/*.cpp")
 
+if ("${CMAKE_GENERATOR}" MATCHES "(Win64)")
+
 set(GENERATED_SOURCES
 	${CMAKE_CURRENT_BINARY_DIR}/ExtensionFunctionStubs_64.asm)
 
@@ -99,6 +101,8 @@ add_custom_command(
 	COMMENT "Generating extension function stubs"
 	DEPENDS ../MainLib/generate_64b_asm_stubs.py)
 set_source_files_properties("${GENERATED_SOURCES}" PROPERTIES GENERATED TRUE)
+
+endif()
 
 include_directories(
 	..
