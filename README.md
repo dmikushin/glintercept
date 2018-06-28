@@ -1,5 +1,7 @@
 # ![](./Docs/Images/GLicon.png?raw=true) GLIntercept
 
+[![Build status](https://ci.appveyor.com/api/projects/status/xnrd0g42kyf84uc2/branch/master?svg=true)](https://ci.appveyor.com/project/dmikushin/glintercept/branch/master)
+
 ## About
 GLIntercept is a OpenGL function call interceptor for Windows that will intercept and log **all** [OpenGL](http://www.opengl.org) calls. 
 
