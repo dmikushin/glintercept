@@ -11,24 +11,20 @@ configuration:
 - Release
 - Debug
 platform:
+- Win32
 - x64
-environment:
-  matrix:
-  - arch: Win32
-  - arch: Win64
 matrix:
   fast_finish: true
 
 # skip unsupported combinations
 init:
-- set arch=
-- if "%arch%"=="Win32" ( set arch= Win32)
-- if "%arch%"=="Win64" ( set arch= Win64)
-- echo %arch%
+- set garch=
+- if "%platform%"=="x64" ( set garch= Win64)
+- echo %garch%
 - echo %APPVEYOR_BUILD_WORKER_IMAGE%
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2013" ( set generator="Visual Studio 12 2013%arch%" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%garch%" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%garch%" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2013" ( set generator="Visual Studio 12 2013%garch%" )
 - echo %generator%
 
 before_build:
