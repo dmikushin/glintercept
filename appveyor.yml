@@ -37,7 +37,7 @@ before_build:
     cmake --version
     cmake ../src/Workspaces -G %generator%
 build:
-  project: c:\projects\cmake-init\build\GLIntercept.sln
+  project: c:\projects\glintercept\build\GLIntercept.sln
   verbosity: minimal
   parallel: true
 only_commits:
