@@ -23,7 +23,9 @@
 
 cmake_minimum_required(VERSION 2.6)
 
+if ("${CMAKE_GENERATOR}" MATCHES "(Win64)")
 enable_language(ASM_MASM)
+endif()
 
 project(GLIntercept)
 
@@ -107,8 +109,6 @@ endif()
 include_directories(
 	..
 	../Common
-	../MainLib
-	../GLIConfig
 	../../3rdParty/Corona-1.0.2-Static/src
 	../../3rdParty/Corona-1.0.2-Static/src/jpeg-6b
 	../../3rdParty/Corona-1.0.2-Static/src/libpng-1.2.1
@@ -120,23 +120,104 @@ add_definitions(-DGLI_BUILD_WINDOWS)
 else()
 add_definitions(-DGLI_BUILD_LINUX -Wno-write-strings)
 endif()
+
 add_library(GLIntercept SHARED ${COMMON_SOURCES} ${MAINLIB_SOURCES} ${CORONA_SOURCES} ${GENERATED_SOURCES})
+target_include_directories(GLIntercept PUBLIC "../MainLib")
+
+if (WIN32)
+set_target_properties(GLIntercept PROPERTIES OUTPUT_NAME "OpenGL32")
+endif()
 
 if (NOT WIN32)
-set(corona_dir "${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/Corona-1.0.2-Static")
-target_link_libraries(GLIntercept png pthread "${corona_dir}/src/.libs/libcorona.a")
-
-#build corona
-add_custom_command(OUTPUT "${corona_dir}/src/.libs/libcorona.a"
-  COMMAND sh bootstrap
-  COMMAND sh configure
-  COMMAND make clean  #libcorona.a alone doesnt seem to trigger build for corona project
-  COMMAND make -j 4
-  WORKING_DIRECTORY ${corona_dir}
-  COMMENT "Building libcorona")
-add_custom_target(corona DEPENDS "${corona_dir}/src/.libs/libcorona.a")
-add_dependencies(GLIntercept corona)
+target_link_libraries(GLIntercept png pthread)
 else()
 target_link_libraries(GLIntercept DbgHelp)
+endif()
+
+# Build plugins
+
+file(GLOB GLCStrike_SOURCES
+	"../Plugins/GLCStrike/*.cpp"
+	"../Plugins/GLCStrike/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLCStrike SHARED ${GLCStrike_SOURCES})
+target_include_directories(GLCStrike PUBLIC "../Plugins/GLCStrike")
+if (WIN32)
+target_link_libraries(GLCStrike DbgHelp)
+endif()
+
+file(GLOB GLDebugContext_SOURCES
+	"../Plugins/GLDebugContext/*.cpp"
+	"../Plugins/GLDebugContext/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/ErrorLog.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLDebugContext SHARED ${GLDebugContext_SOURCES})
+target_include_directories(GLDebugContext PUBLIC "../Plugins/GLDebugContext")
+if (WIN32)
+target_link_libraries(GLDebugContext DbgHelp)
+endif()
+
+file(GLOB GLExtOverride_SOURCES
+	"../Plugins/GLExtOverride/*.cpp"
+	"../Plugins/GLExtOverride/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLExtOverride SHARED ${GLExtOverride_SOURCES})
+target_include_directories(GLExtOverride PUBLIC "../Plugins/GLExtOverride")
+if (WIN32)
+target_link_libraries(GLExtOverride DbgHelp)
+endif()
+
+file(GLOB GLFramePing_SOURCES
+	"../Plugins/GLFramePing/*.cpp"
+	"../Plugins/GLFramePing/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLFramePing SHARED ${GLFramePing_SOURCES})
+target_include_directories(GLFramePing PUBLIC "../Plugins/GLFramePing")
+if (WIN32)
+target_link_libraries(GLFramePing DbgHelp)
+endif()
+
+file(GLOB GLFreeCam_SOURCES
+	"../Plugins/GLFreeCam/*.cpp"
+	"../Plugins/GLFreeCam/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLFreeCam SHARED ${GLFreeCam_SOURCES})
+target_include_directories(GLFreeCam PUBLIC "../Plugins/GLFreeCam")
+if (WIN32)
+target_link_libraries(GLFreeCam DbgHelp)
+endif()
+
+file(GLOB GLFuncStats_SOURCES
+	"../Plugins/GLFuncStats/*.cpp"
+	"../Plugins/GLFuncStats/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLFuncStats SHARED ${GLFuncStats_SOURCES})
+target_include_directories(GLFuncStats PUBLIC "../Plugins/GLFuncStats")
+if (WIN32)
+target_link_libraries(GLFuncStats DbgHelp)
+endif()
+
+file(GLOB TestPlugin_SOURCES
+	"../Plugins/TestPlugin/*.cpp"
+	"../Plugins/TestPlugin/*.def"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(TestPlugin SHARED ${TestPlugin_SOURCES})
+target_include_directories(TestPlugin PUBLIC "../Plugins/TestPlugin")
+if (WIN32)
+target_link_libraries(TestPlugin DbgHelp)
 endif()
 
