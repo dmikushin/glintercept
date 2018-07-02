@@ -1,4 +1,5 @@
-#Copyright (c) 2010 Intel Coprporation
+# Copyright (c) 2010 Intel Coprporation
+# Copyright (c) 2018 Dmitry Mikushin
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -115,17 +116,15 @@ include_directories(
 	../../3rdParty/Corona-1.0.2-Static/src/libungif-4.1.0
 	../../3rdParty/Corona-1.0.2-Static/src/zlib-1.1.4)
 
-if (WIN32)
-add_definitions(-DGLI_BUILD_WINDOWS)
-else()
-add_definitions(-DGLI_BUILD_LINUX -Wno-write-strings)
-endif()
-
 add_library(GLIntercept SHARED ${COMMON_SOURCES} ${MAINLIB_SOURCES} ${CORONA_SOURCES} ${GENERATED_SOURCES})
 target_include_directories(GLIntercept PUBLIC "../MainLib")
 
 if (WIN32)
 set_target_properties(GLIntercept PROPERTIES OUTPUT_NAME "OpenGL32")
+add_definitions(-DGLI_BUILD_WINDOWS=1)
+else()
+add_definitions(-DGLI_BUILD_LINUX=1)
+add_definitions(-Wno-write-strings)
 endif()
 
 if (NOT WIN32)
@@ -219,5 +218,18 @@ add_library(TestPlugin SHARED ${TestPlugin_SOURCES})
 target_include_directories(TestPlugin PUBLIC "../Plugins/TestPlugin")
 if (WIN32)
 target_link_libraries(TestPlugin DbgHelp)
+endif()
+
+file(GLOB GLShaderEdit_SOURCES
+	"../Plugins/GLShaderEdit/*.cpp"
+	"../Plugins/GLShaderEdit/*.def"
+	"../Plugins/GLShaderEdit/PreProcessor/*.c"
+	"../Common/ConfigParser.cpp"
+	"../Common/InputUtils.cpp"
+	"../Common/MiscUtils.cpp")
+add_library(GLShaderEdit SHARED ${GLShaderEdit_SOURCES})
+target_include_directories(GLShaderEdit PUBLIC "../Plugins/GLShaderEdit")
+if (WIN32)
+target_link_libraries(GLShaderEdit DbgHelp)
 endif()
 
