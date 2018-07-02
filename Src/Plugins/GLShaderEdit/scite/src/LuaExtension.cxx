@@ -1365,8 +1365,7 @@ static bool InitGlobalScope(bool checkProperties, bool forceReload = false) {
 	luaopen_io(luaState);
 	luaopen_debug(luaState);
 #if PLAT_WIN
-	// loadlib might also work on Linux and some Unix variants, with some additional defines.
-	luaopen_loadlib(luaState);
+	luaopen_package(luaState);
 #endif
 
 	lua_register(luaState, "_ALERT", cf_global_print);

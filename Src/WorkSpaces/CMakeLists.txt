@@ -233,3 +233,48 @@ if (WIN32)
 target_link_libraries(GLShaderEdit DbgHelp)
 endif()
 
+#file(GLOB scintilla_SOURCES
+#	"../Plugins/GLShaderEdit/scintilla/src/*.cxx")
+#if (WIN32)
+#file(GLOB scintilla_PLATFORM
+#	"../Plugins/GLShaderEdit/scintilla/win32/*.cxx")
+#else()
+#file(GLOB scintilla_PLATFORM
+#	"../Plugins/GLShaderEdit/scintilla/gtk/*.cxx")
+#endif()
+#add_library(scintilla STATIC ${scintilla_SOURCES} ${scintilla_PLATFORM})
+#target_include_directories(scintilla PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
+#target_include_directories(scintilla PUBLIC "../Plugins/GLShaderEdit/scintilla/src")
+
+#file(GLOB wxstedit_SOURCES
+#	"../Plugins/GLShaderEdit/wxstedit/src/*.cpp")
+#add_library(wxstedit STATIC ${wxstedit_SOURCES})
+#target_include_directories(wxstedit PUBLIC "../Plugins/GLShaderEdit/wxstedit/include")
+
+if (WIN32)
+add_subdirectory(../lua ${CMAKE_CURRENT_BINARY_DIR}/lua)
+endif()
+
+file(GLOB scite_SOURCES
+	"../Plugins/GLShaderEdit/scite/src/*.cxx")
+if (WIN32)
+file(GLOB scite_PLATFORM
+	"../Plugins/GLShaderEdit/scite/win32/*.cxx")
+else()
+file(GLOB scite_PLATFORM
+	"../Plugins/GLShaderEdit/scite/gtk/*.cxx")
+endif()
+add_executable(scite ${scite_SOURCES} ${scite_PLATFORM})
+target_compile_definitions(scite PUBLIC GLI_CHANGES=1)
+target_include_directories(scite PUBLIC "../Plugins/GLShaderEdit/scite/src")
+target_include_directories(scite PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
+target_include_directories(scite PUBLIC "../lua/src")
+target_include_directories(scite PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/lua")
+
+if (WIN32)
+#target_link_libraries(scite scintilla wxstedit Imm32)
+target_link_libraries(scite Imm32 liblua)
+else()
+#target_link_libraries(scite scintilla wxstedit)
+endif()
+
