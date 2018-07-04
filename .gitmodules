@@ -1,6 +1,3 @@
 [submodule "lua"]
 	path = 3rdParty/lua
 	url = https://github.com/LuaDist/lua
-[submodule "3rdParty/wxWidgets"]
-	path = 3rdParty/wxWidgets
-	url = https://github.com/wxWidgets/wxWidgets.git
