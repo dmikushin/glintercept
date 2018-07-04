@@ -87,7 +87,7 @@ public:
     #endif
 
     static BOOL CALLBACK
-    EnumModulesProc(PSTR name, DWORD_32_64 base, ULONG size, void *data);
+    EnumModulesProc(PCSTR name, DWORD_32_64 base, ULONG size, void *data);
 };
 
 // ----------------------------------------------------------------------------
@@ -215,7 +215,7 @@ wxString wxVersionDLL::GetFileVersion(const wxString& filename) const
 
 /* static */
 BOOL CALLBACK
-wxDynamicLibraryDetailsCreator::EnumModulesProc(PSTR name,
+wxDynamicLibraryDetailsCreator::EnumModulesProc(PCSTR name,
                                                 DWORD_32_64 base,
                                                 ULONG size,
                                                 void *data)

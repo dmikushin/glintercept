@@ -327,7 +327,12 @@ static int GetTimeZone()
         // the reason for the cast is explained here:
         // http://thread.gmane.org/gmane.comp.lib.wxwidgets.devel/72711
         // this is still wrong but it isn't any more incorrect than previously
-        gmtoffset = (int)WX_TIMEZONE;
+#if _MSC_VER >= 1900
+        // The timezone global variable is deprecated, disappears in VS 2015.
+		long WX_TIMEZONE = 0;
+		_get_timezone(&WX_TIMEZONE);
+#endif
+		gmtoffset = (int)WX_TIMEZONE;
 #endif // WX_GMTOFF_IN_TM/!WX_GMTOFF_IN_TM
     }
 
