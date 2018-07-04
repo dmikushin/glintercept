@@ -985,7 +985,8 @@ bool wxSTEditorFrame::ExtractShaderString(const wxString &shaderToken, const wxS
  
 
   //Loop for all characters in the string
-  for(uint i=0; i<shaderSource.length(); i++)
+  uint i = 0;
+  for( ; i<shaderSource.length(); i++)
   {
     //Check if the starting character is a open bracket
     if(shaderSource[i] == '[' && lineStart == i)

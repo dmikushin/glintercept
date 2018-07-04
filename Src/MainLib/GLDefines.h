@@ -138,6 +138,10 @@ typedef struct __GLsync *GLsync;
 #define GL_LEFT                           0x0406
 #define GL_RIGHT                          0x0407
 #define GL_FRONT_AND_BACK                 0x0408
+#define GL_AUX0                           0x0409 
+#define GL_AUX1                           0x040A 
+#define GL_AUX2                           0x040B 
+#define GL_AUX3                           0x040C 
 /* ErrorCode */
 #define GL_NO_ERROR                       0
 #define GL_INVALID_ENUM                   0x0500
@@ -1966,6 +1970,32 @@ DECLARE_HANDLE(HPBUFFERARB);
 #define GL_MAX_FRAGMENT_IMAGE_UNIFORMS    0x90CE
 #define GL_MAX_COMBINED_IMAGE_UNIFORMS    0x90CF
 #endif
+
+#ifndef GL_ARB_shader_objects
+#define GL_ARB_shader_objects 1
+#define GL_SAMPLER_2D_RECT_ARB            0x8B63
+#define GL_SAMPLER_2D_RECT_SHADOW_ARB     0x8B64
+#endif /* GL_ARB_shader_objects */
+
+#ifndef GL_EXT_framebuffer_object
+#define GL_EXT_framebuffer_object 1
+#define GL_COLOR_ATTACHMENT0_EXT          0x8CE0
+#define GL_COLOR_ATTACHMENT1_EXT          0x8CE1
+#define GL_COLOR_ATTACHMENT2_EXT          0x8CE2
+#define GL_COLOR_ATTACHMENT3_EXT          0x8CE3
+#define GL_COLOR_ATTACHMENT4_EXT          0x8CE4
+#define GL_COLOR_ATTACHMENT5_EXT          0x8CE5
+#define GL_COLOR_ATTACHMENT6_EXT          0x8CE6
+#define GL_COLOR_ATTACHMENT7_EXT          0x8CE7
+#define GL_COLOR_ATTACHMENT8_EXT          0x8CE8
+#define GL_COLOR_ATTACHMENT9_EXT          0x8CE9
+#define GL_COLOR_ATTACHMENT10_EXT         0x8CEA
+#define GL_COLOR_ATTACHMENT11_EXT         0x8CEB
+#define GL_COLOR_ATTACHMENT12_EXT         0x8CEC
+#define GL_COLOR_ATTACHMENT13_EXT         0x8CED
+#define GL_COLOR_ATTACHMENT14_EXT         0x8CEE
+#define GL_COLOR_ATTACHMENT15_EXT         0x8CEF
+#endif /* GL_EXT_framebuffer_object */
 
 
 #define GL_TEXTURE_IMMUTABLE_FORMAT       0x912F
