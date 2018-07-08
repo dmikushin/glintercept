@@ -341,22 +341,22 @@ else()
 file(GLOB scite_PLATFORM
 	"../Plugins/GLShaderEdit/scite/gtk/*.cxx")
 endif()
-add_executable(scite ${scite_SOURCES} ${scite_PLATFORM} ../Common/NetworkUtils.cpp)
-target_compile_definitions(scite PUBLIC GLI_CHANGES=1)
-target_compile_definitions(scite PUBLIC STATIC_BUILD=1)
-target_compile_definitions(scite PUBLIC NO_LUA=1)
-target_compile_definitions(scite PUBLIC GLI_BUILD_WINDOWS=1)
-target_include_directories(scite PUBLIC "../Plugins/GLShaderEdit/scite/src")
-target_include_directories(scite PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
+add_executable(GLISciTE ${scite_SOURCES} ${scite_PLATFORM} ../Common/NetworkUtils.cpp)
+target_compile_definitions(GLISciTE PUBLIC GLI_CHANGES=1)
+target_compile_definitions(GLISciTE PUBLIC STATIC_BUILD=1)
+target_compile_definitions(GLISciTE PUBLIC NO_LUA=1)
+target_compile_definitions(GLISciTE PUBLIC GLI_BUILD_WINDOWS=1)
+target_include_directories(GLISciTE PUBLIC "../Plugins/GLShaderEdit/scite/src")
+target_include_directories(GLISciTE PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
 if (WIN32)
-target_compile_definitions(scite PUBLIC _AFXDLL=1)
-target_include_directories(scite PUBLIC "../../3rdParty/lua/src")
-target_include_directories(scite PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/lua")
-set_target_properties(scite PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /MANIFEST:NO")
+target_compile_definitions(GLISciTE PUBLIC _AFXDLL=1)
+target_include_directories(GLISciTE PUBLIC "../../3rdParty/lua/src")
+target_include_directories(GLISciTE PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/lua")
+set_target_properties(GLISciTE PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /MANIFEST:NO")
 endif()
 
 if (WIN32)
-target_link_libraries(scite scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4 liblua
+target_link_libraries(GLISciTE scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4 liblua
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/expatd.lib
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/jpegd.lib
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/pngd.lib
@@ -366,11 +366,11 @@ target_link_libraries(scite scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4 lib
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/zlibd.lib
 )
 else()
-target_link_libraries(scite scintilla wxstedit glslang lua)
+target_link_libraries(GLISciTE scintilla wxstedit glslang lua)
 endif()
 
-add_custom_command(TARGET scite
+add_custom_command(TARGET GLISciTE
 	POST_BUILD COMMAND
-	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\..\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.manifest\" -outputresource:\"${CMAKE_CURRENT_BINARY_DIR}\\Debug\\scite.exe\"\;\#1
+	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\..\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.manifest\" -outputresource:\"${CMAKE_CURRENT_BINARY_DIR}\\Debug\\GLISciTE.exe\"\;\#1
 	COMMENT "Adding custom manifest file...")
-                  
+
