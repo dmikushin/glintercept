@@ -326,10 +326,6 @@ if (MSVC)
 target_include_directories(wxstedit PUBLIC "../../3rdParty/wxWidgets/include/msvc")
 endif(MSVC)
 
-if (WIN32)
-add_subdirectory(../../3rdParty/lua ${CMAKE_CURRENT_BINARY_DIR}/lua)
-endif()
-
 file(GLOB scite_SOURCES
 	"../Plugins/GLShaderEdit/scite/src/*.cxx")
 if (WIN32)
@@ -350,13 +346,11 @@ target_include_directories(GLISciTE PUBLIC "../Plugins/GLShaderEdit/scite/src")
 target_include_directories(GLISciTE PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
 if (WIN32)
 target_compile_definitions(GLISciTE PUBLIC _AFXDLL=1)
-target_include_directories(GLISciTE PUBLIC "../../3rdParty/lua/src")
-target_include_directories(GLISciTE PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/lua")
 set_target_properties(GLISciTE PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /MANIFEST:NO")
 endif()
 
 if (WIN32)
-target_link_libraries(GLISciTE scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4 liblua
+target_link_libraries(GLISciTE scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/expatd.lib
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/jpegd.lib
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/pngd.lib
@@ -366,7 +360,7 @@ target_link_libraries(GLISciTE scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4 
 	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/zlibd.lib
 )
 else()
-target_link_libraries(GLISciTE scintilla wxstedit glslang lua)
+target_link_libraries(GLISciTE scintilla wxstedit glslang)
 endif()
 
 add_custom_command(TARGET GLISciTE

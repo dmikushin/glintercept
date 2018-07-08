@@ -1,3 +1,5 @@
+#ifndef NO_LUA
+
 // SciTE - Scintilla based Text Editor
 // LuaExtension.cxx - Lua scripting extension
 // Copyright 1998-2000 by Neil Hodgson <neilh@scintilla.org>
@@ -1725,3 +1727,5 @@ bool LuaExtension::OnUserListSelection(int listType, const char *selection) {
 // Unreferenced inline functions are OK
 #pragma warning(disable: 4514)
 #endif
+
+#endif // NO_LUA
