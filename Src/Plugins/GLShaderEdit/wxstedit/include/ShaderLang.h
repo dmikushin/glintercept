@@ -36,6 +36,9 @@
 
 #include "ResourceLimits.h"
 
+// Disable DLL, use static library glslang
+#if 0
+
 #ifdef _WIN32
 #define C_DECL __cdecl
 #ifdef SH_EXPORTING
@@ -47,6 +50,13 @@
 #define SH_IMPORT_EXPORT
 #define __fastcall
 #define C_DECL
+#endif
+
+#else
+
+#define C_DECL __cdecl
+#define SH_IMPORT_EXPORT
+
 #endif
 
 //

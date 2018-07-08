@@ -9,6 +9,8 @@ class CPropTreeItemGLI;
 
 #include <vector>
 
+#include "OSDefines.h"
+
 using namespace std;
 
 //DT_TODO: Comments, class checks

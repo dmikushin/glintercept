@@ -32,16 +32,16 @@
 //POSSIBILITY OF SUCH DAMAGE.
 //
 
+#if !(defined(linux))
+#error Trying to include a Linux specific file in a non-Linux build.
+#endif
+
 #ifndef __OSINCLUDE_H
 #define __OSINCLUDE_H
 
 //
 // This file contains any Linux specific functions.
 //
-
-#if !(defined(linux))
-#error Trying to include a Linux specific file in a non-Linux build.
-#endif
 
 #include <pthread.h>
 #include <semaphore.h>

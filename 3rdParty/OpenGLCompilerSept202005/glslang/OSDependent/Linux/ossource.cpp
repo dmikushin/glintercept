@@ -32,16 +32,13 @@
 //POSSIBILITY OF SUCH DAMAGE.
 //
 
+#if defined(linux)
+
 //
 // This file contains the Linux specific functions
 //
 #include "osinclude.h"
 #include "InitializeDll.h"
-
-#if !(defined(linux))
-#error Trying to build a Linux specific file in a non-Linux build.
-#endif
-
 
 //
 // Thread cleanup
@@ -139,3 +136,6 @@ bool OS_FreeTLSIndex(OS_TLSIndex nIndex)
 	else
 		return false;
 }
+
+#endif
+

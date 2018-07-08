@@ -28,7 +28,16 @@ if ("${CMAKE_GENERATOR}" MATCHES "(Win64)")
 enable_language(ASM_MASM)
 endif()
 
+# For Windows, we need the Resource Compiler language
+if (WIN32)
+enable_language(RC)
+endif()
+
 project(GLIntercept)
+
+# Manual build type selection (for debugging purposes)
+set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Release)
 
 # Find Python interpreter
 find_package(PythonInterp REQUIRED)
@@ -237,31 +246,85 @@ file(GLOB scintilla_SOURCES
 	"../Plugins/GLShaderEdit/scintilla/src/*.cxx")
 if (WIN32)
 file(GLOB scintilla_PLATFORM
-	"../Plugins/GLShaderEdit/scintilla/win32/*.cxx")
+	"../Plugins/GLShaderEdit/scintilla/win32/*.cxx"
+	"../Plugins/GLShaderEdit/scintilla/win32/ScintRes.rc")
 else()
 file(GLOB scintilla_PLATFORM
 	"../Plugins/GLShaderEdit/scintilla/gtk/*.cxx")
 endif()
 add_library(scintilla STATIC ${scintilla_SOURCES} ${scintilla_PLATFORM})
+target_compile_definitions(scintilla PUBLIC SCI_LEXER=1)
 target_include_directories(scintilla PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
 target_include_directories(scintilla PUBLIC "../Plugins/GLShaderEdit/scintilla/src")
+if (WIN32)
+target_include_directories(scintilla PUBLIC "../Plugins/GLShaderEdit/scintilla/win32")
+endif()
 
-#if (WIN32)
-#add_subdirectory(../../3rdParty/wxWidgets ${CMAKE_CURRENT_BINARY_DIR}/wxWidgets)
-#endif()
+file(GLOB_RECURSE glslang_SOURCES
+	"../../3rdParty/OpenGLCompilerSept202005/*.c"
+	"../../3rdParty/OpenGLCompilerSept202005/*.cpp")
+
+if (WIN32)
+set(FLEX ./../3rdParty/OpenGLCompilerSept202005/tools/flex.exe)
+else()
+set(FLEX flex)
+endif()
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Gen_glslang.cpp
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}"
+    COMMAND ${FLEX} ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.l
+    COMMENT "Running Flex for file glslang.l"
+    DEPENDS ${FLEX} ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.l)
+set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/Gen_glslang.cpp" PROPERTIES GENERATED TRUE)
+# Submit the resulting source files for compilation
+LIST(APPEND glslang_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Gen_glslang.cpp)
+
+if (WIN32)
+set(BISON ./bison.exe)
+else()
+set(BISON bison)
+endif()
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp.h
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/OpenGLCompilerSept202005/tools
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}"
+    COMMAND ${BISON} -t -v -d --no-lines ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.y -o ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp
+    COMMENT "Running Bison for file glslang.y"
+    DEPENDS ${BISON} ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.y)
+set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp" PROPERTIES GENERATED TRUE)
+set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp.h" PROPERTIES GENERATED TRUE)
+# Submit the resulting source files for compilation
+LIST(APPEND glslang_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp)
+
+add_library(glslang STATIC ${glslang_SOURCES})
+target_compile_definitions(glslang PUBLIC _ALT_NS=1)
+if (NOT WIN32)
+target_compile_definitions(glslang PUBLIC linux=1)
+endif()
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/glslang")
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/OGLCompilersDLL")
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent")
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/preprocessor")
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/glslang/Public")
+if (WIN32)
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/glslang/OSDependent/Windows")
+else()
+target_include_directories(glslang PUBLIC "../../3rdParty/OpenGLCompilerSept202005/glslang/OSDependent/Linux")
+endif()
 
 file(GLOB wxstedit_SOURCES
 	"../Plugins/GLShaderEdit/wxstedit/src/*.cpp")
 add_library(wxstedit STATIC ${wxstedit_SOURCES})
-target_compile_definitions(wxstedit PUBLIC wxUSE_PRINTING_ARCHITECTURE=1)
+target_compile_definitions(wxstedit PRIVATE _LIB=1)
+target_compile_definitions(wxstedit PRIVATE __WXMSW__=1)
+target_compile_definitions(wxstedit PRIVATE __WX__=1)
 target_include_directories(wxstedit PUBLIC "../Plugins/GLShaderEdit/wxstedit/include")
-if (WIN32)
 target_include_directories(wxstedit PUBLIC "../../3rdParty/wxWidgets/include")
 target_include_directories(wxstedit PUBLIC "../../3rdParty/wxWidgets/contrib/include")
 if (MSVC)
 target_include_directories(wxstedit PUBLIC "../../3rdParty/wxWidgets/include/msvc")
 endif(MSVC)
-endif()
 
 if (WIN32)
 add_subdirectory(../../3rdParty/lua ${CMAKE_CURRENT_BINARY_DIR}/lua)
@@ -270,24 +333,44 @@ endif()
 file(GLOB scite_SOURCES
 	"../Plugins/GLShaderEdit/scite/src/*.cxx")
 if (WIN32)
-file(GLOB scite_PLATFORM
-	"../Plugins/GLShaderEdit/scite/win32/*.cxx")
+file(GLOB_RECURSE scite_PLATFORM
+	"../Plugins/GLShaderEdit/scite/win32/*.cpp"
+	"../Plugins/GLShaderEdit/scite/win32/*.cxx"
+	"../Plugins/GLShaderEdit/scite/win32/SciTERes.rc")
 else()
 file(GLOB scite_PLATFORM
 	"../Plugins/GLShaderEdit/scite/gtk/*.cxx")
 endif()
-add_executable(scite ${scite_SOURCES} ${scite_PLATFORM})
+add_executable(scite ${scite_SOURCES} ${scite_PLATFORM} ../Common/NetworkUtils.cpp)
 target_compile_definitions(scite PUBLIC GLI_CHANGES=1)
+target_compile_definitions(scite PUBLIC STATIC_BUILD=1)
+target_compile_definitions(scite PUBLIC NO_LUA=1)
+target_compile_definitions(scite PUBLIC GLI_BUILD_WINDOWS=1)
 target_include_directories(scite PUBLIC "../Plugins/GLShaderEdit/scite/src")
 target_include_directories(scite PUBLIC "../Plugins/GLShaderEdit/scintilla/include")
 if (WIN32)
+target_compile_definitions(scite PUBLIC _AFXDLL=1)
 target_include_directories(scite PUBLIC "../../3rdParty/lua/src")
 target_include_directories(scite PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/lua")
+set_target_properties(scite PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /MANIFEST:NO")
 endif()
 
 if (WIN32)
-target_link_libraries(scite scintilla wxstedit Imm32 liblua)
+target_link_libraries(scite scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4 liblua
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/expatd.lib
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/jpegd.lib
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/pngd.lib
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/regexd.lib
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/tiffd.lib
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/wxmswd.lib
+	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/zlibd.lib
+)
 else()
-target_link_libraries(scite scintilla wxstedit lua)
+target_link_libraries(scite scintilla wxstedit glslang lua)
 endif()
 
+add_custom_command(TARGET scite
+	POST_BUILD COMMAND
+	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\..\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.manifest\" -outputresource:\"${CMAKE_CURRENT_BINARY_DIR}\\Debug\\scite.exe\"\;\#1
+	COMMENT "Adding custom manifest file...")
+                  

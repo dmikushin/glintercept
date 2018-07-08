@@ -32,6 +32,10 @@
 //POSSIBILITY OF SUCH DAMAGE.
 //
 
+#if !(defined(_WIN32) || defined(_WIN64))
+#error Trying to include a windows specific file in a non windows build.
+#endif
+
 #ifndef __OSINCLUDE_H
 #define __OSINCLUDE_H
 
@@ -39,10 +43,6 @@
 // This file contains contains the window's specific datatypes and
 // declares any windows specific functions.
 //
-
-#if !(defined(_WIN32) || defined(_WIN64))
-#error Trying to include a windows specific file in a non windows build.
-#endif
 
 #define STRICT
 #define VC_EXTRALEAN 1

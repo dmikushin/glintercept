@@ -32,15 +32,12 @@
 //POSSIBILITY OF SUCH DAMAGE.
 //
 
+#if defined(_WIN32) || defined(_WIN64)
+
 #include "osinclude.h"
 //
 // This file contains contains the window's specific functions
 //
-
-#if !(defined(_WIN32) || defined(_WIN64))
-#error Trying to build a windows specific file in a non windows build.
-#endif
-
 
 //
 // Thread Local Storage Operations
@@ -83,3 +80,6 @@ bool OS_FreeTLSIndex(OS_TLSIndex nIndex)
 	else
 		return false;
 }
+
+#endif
+
