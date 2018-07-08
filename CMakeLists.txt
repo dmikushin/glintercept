@@ -94,8 +94,8 @@ set(MAINLIB_SOURCES
 	Src/MainLib/InterceptDisplayList.cpp)
 
 file(GLOB_RECURSE CORONA_SOURCES
-	"3rdParty/Corona-1.0.2-Static/src/*.c"
-	"3rdParty/Corona-1.0.2-Static/src/*.cpp")
+	"3rdParty/corona/src/*.c"
+	"3rdParty/corona/src/*.cpp")
 
 if ("${CMAKE_GENERATOR}" MATCHES "(Win64)")
 
@@ -118,11 +118,11 @@ endif()
 
 include_directories(
 	Src/Common
-	3rdParty/Corona-1.0.2-Static/src
-	3rdParty/Corona-1.0.2-Static/src/jpeg-6b
-	3rdParty/Corona-1.0.2-Static/src/libpng-1.2.1
-	3rdParty/Corona-1.0.2-Static/src/libungif-4.1.0
-	3rdParty/Corona-1.0.2-Static/src/zlib-1.1.4)
+	3rdParty/corona/src
+	3rdParty/corona/src/jpeg-6b
+	3rdParty/corona/src/libpng-1.2.1
+	3rdParty/corona/src/libungif-4.1.0
+	3rdParty/corona/src/zlib-1.1.4)
 
 add_library(GLIntercept SHARED ${COMMON_SOURCES} ${MAINLIB_SOURCES} ${CORONA_SOURCES} ${GENERATED_SOURCES})
 target_include_directories(GLIntercept PUBLIC "Src/MainLib")
@@ -260,11 +260,11 @@ target_include_directories(scintilla PUBLIC "Src/Plugins/GLShaderEdit/scintilla/
 endif()
 
 file(GLOB_RECURSE glslang_SOURCES
-	"3rdParty/OpenGLCompilerSept202005/*.c"
-	"3rdParty/OpenGLCompilerSept202005/*.cpp")
+	"3rdParty/glslang/*.c"
+	"3rdParty/glslang/*.cpp")
 
 if (WIN32)
-set(FLEX ./../3rdParty/OpenGLCompilerSept202005/tools/flex.exe)
+set(FLEX ./../3rdParty/glslang/tools/flex.exe)
 else()
 set(FLEX flex)
 endif()
@@ -272,9 +272,9 @@ add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Gen_glslang.cpp
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}"
-    COMMAND ${FLEX} ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.l
+    COMMAND ${FLEX} ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/glslang/src/MachineIndependent/glslang.l
     COMMENT "Running Flex for file glslang.l"
-    DEPENDS ${FLEX} ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.l)
+    DEPENDS ${FLEX} ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/glslang/src/MachineIndependent/glslang.l)
 set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/Gen_glslang.cpp" PROPERTIES GENERATED TRUE)
 # Submit the resulting source files for compilation
 LIST(APPEND glslang_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Gen_glslang.cpp)
@@ -286,11 +286,11 @@ set(BISON bison)
 endif()
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp.h
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/OpenGLCompilerSept202005/tools
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/glslang/tools
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}"
-    COMMAND ${BISON} -t -v -d --no-lines ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.y -o ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp
+    COMMAND ${BISON} -t -v -d --no-lines ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/glslang/src/MachineIndependent/glslang.y -o ${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp
     COMMENT "Running Bison for file glslang.y"
-    DEPENDS ${BISON} ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/glslang.y)
+    DEPENDS ${BISON} ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/glslang/src/MachineIndependent/glslang.y)
 set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp" PROPERTIES GENERATED TRUE)
 set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/glslang.cpp.h" PROPERTIES GENERATED TRUE)
 # Submit the resulting source files for compilation
@@ -301,15 +301,15 @@ target_compile_definitions(glslang PUBLIC _ALT_NS=1)
 if (NOT WIN32)
 target_compile_definitions(glslang PUBLIC linux=1)
 endif()
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/glslang")
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/OGLCompilersDLL")
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent")
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/glslang/MachineIndependent/preprocessor")
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/glslang/Public")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src/OGLCompilersDLL")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src/MachineIndependent")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src/MachineIndependent/preprocessor")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src/Public")
 if (WIN32)
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/glslang/OSDependent/Windows")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src/OSDependent/Windows")
 else()
-target_include_directories(glslang PUBLIC "3rdParty/OpenGLCompilerSept202005/glslang/OSDependent/Linux")
+target_include_directories(glslang PUBLIC "3rdParty/glslang/src/OSDependent/Linux")
 endif()
 
 file(GLOB wxstedit_SOURCES
