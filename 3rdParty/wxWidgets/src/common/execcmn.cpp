@@ -11,13 +11,11 @@
 // Licence:     wxWindows licence
 ///////////////////////////////////////////////////////////////////////////////
 
+// this file should never be compiled directly, just included by other code
+#ifdef _WX_USED_BY_WXEXECUTE_
+
 #ifndef _WX_WXEXEC_CPP_
 #define _WX_WXEXEC_CPP_
-
-// this file should never be compiled directly, just included by other code
-#ifndef _WX_USED_BY_WXEXECUTE_
-    #error "You should never directly build this file!"
-#endif
 
 // ----------------------------------------------------------------------------
 // wxStreamTempInputBuffer
@@ -120,3 +118,4 @@ wxStreamTempInputBuffer::~wxStreamTempInputBuffer()
 
 #endif // _WX_WXEXEC_CPP_
 
+#endif // _WX_USED_BY_WXEXECUTE_

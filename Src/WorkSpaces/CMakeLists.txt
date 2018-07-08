@@ -326,6 +326,36 @@ if (MSVC)
 target_include_directories(wxstedit PUBLIC "../../3rdParty/wxWidgets/include/msvc")
 endif(MSVC)
 
+file(GLOB_RECURSE wxWidgets_SOURCES
+	"../../3rdParty/wxWidgets/src/common/*.cpp"
+	"../../3rdParty/wxWidgets/src/html/*.cpp"
+	"../../3rdParty/wxWidgets/src/xml/*.cpp"
+	"../../3rdParty/wxWidgets/src/xrc/*.cpp")
+if (WIN32)
+file(GLOB_RECURSE wxWidgets_PLATFORM
+	"../../3rdParty/wxWidgets/src/msw/.*.cpp")
+# Remove WinCE-specific sources
+list(FILTER wxWidgets_SOURCES EXCLUDE REGEX
+	"../../3rdParty/wxWidgets/src/msw/wince/*.cpp")
+else()
+file(GLOB_RECURSE wxWidgets_PLATFORM
+	"../../3rdParty/wxWidgets/src/gtk/*.cpp")
+endif()
+add_library(wxWidgets STATIC ${wxWidgets_SOURCES} ${wxWidgets_PLATFORM})
+target_compile_definitions(wxWidgets PRIVATE WINVER=0x0501)
+target_compile_definitions(wxWidgets PRIVATE STRICT=1)
+target_compile_definitions(wxWidgets PRIVATE wxUSE_BASE=1)
+target_compile_definitions(wxWidgets PRIVATE UNICODE=1)
+target_compile_definitions(wxWidgets PRIVATE wxUSE_PRINTING_ARCHITECTURE=1)
+if (CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG")
+target_compile_definitions(wxWidgets PRIVATE __WXDEBUG__=1)
+endif()
+target_include_directories(wxWidgets PUBLIC "../../3rdParty/wxWidgets/include")
+target_include_directories(wxWidgets PUBLIC "../../3rdParty/wxWidgets/contrib/include")
+target_include_directories(wxWidgets PUBLIC "../../3rdParty/wxWidgets/src/expat/lib")
+target_include_directories(wxWidgets PUBLIC "../../3rdParty/wxWidgets/src/regex")
+target_include_directories(wxWidgets PUBLIC "../../3rdParty/wxWidgets/src/tiff")
+
 file(GLOB scite_SOURCES
 	"../Plugins/GLShaderEdit/scite/src/*.cxx")
 if (WIN32)
@@ -350,17 +380,9 @@ set_target_properties(GLISciTE PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /MANIFE
 endif()
 
 if (WIN32)
-target_link_libraries(GLISciTE scintilla wxstedit glslang Comctl32 Imm32 Rpcrt4
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/expatd.lib
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/jpegd.lib
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/pngd.lib
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/regexd.lib
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/tiffd.lib
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/wxmswd.lib
-	${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/wxWidgets/lib/zlibd.lib
-)
+target_link_libraries(GLISciTE scintilla glslang Comctl32 Imm32 Rpcrt4 wxstedit wxWidgets)
 else()
-target_link_libraries(GLISciTE scintilla wxstedit glslang)
+target_link_libraries(GLISciTE scintilla glslang wxstedit wxWidgets)
 endif()
 
 add_custom_command(TARGET GLISciTE
