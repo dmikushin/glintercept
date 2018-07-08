@@ -386,6 +386,6 @@ endif()
 
 add_custom_command(TARGET GLISciTE
 	POST_BUILD COMMAND
-	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\Src\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.manifest\" -outputresource:\"${CMAKE_CURRENT_BINARY_DIR}\\Debug\\GLISciTE.exe\"\;\#1
+	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\Src\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.manifest\" -outputresource:\"$<TARGET_FILE:GLISciTE>\"\;\#1
 	COMMENT "Adding custom manifest file...")
 
