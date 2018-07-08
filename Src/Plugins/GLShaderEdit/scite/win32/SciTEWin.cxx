@@ -1864,15 +1864,6 @@ SString SciTEWin::GetRangeInUIEncoding(Window &win, int selStart, int selEnd) {
 	return s;
 }
 
-bool Scintilla_RegisterClasses(void *hInstance) {
-	return TRUE;
-}
-
-// This function is externally visible so it can be called from container when building statically.
-bool Scintilla_ReleaseResources() {
-	return TRUE;
-}
-
 int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpszCmdLine, int) {
 
 #ifdef NO_EXTENSIONS
