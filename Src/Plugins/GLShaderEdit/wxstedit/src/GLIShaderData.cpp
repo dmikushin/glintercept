@@ -424,7 +424,7 @@ bool GLIShaderData::SendGLIMessage(uint cmdID, const wxString &message, bool gli
   }
 
   //Send the message and time out if not responded to in 3 seconds
-  DWORD result;
+  DWORD_PTR result;
   if(!::SendMessageTimeout(gliWindow, WM_COPYDATA, 
                            reinterpret_cast<WPARAM>(receiveMessageWin), reinterpret_cast<LPARAM>(&sendData),
                            SMTO_NORMAL, 3000, &result))

@@ -224,7 +224,7 @@ void UniqueInstance::SendCommands(const char *cmdLine) {
  */
 BOOL CALLBACK UniqueInstance::SearchOtherInstance(HWND hWnd, LPARAM lParam) {
 	BOOL bResult = TRUE;
-	DWORD result;
+	DWORD_PTR result;
 
 	UniqueInstance *ui = reinterpret_cast<UniqueInstance *>(lParam);
 

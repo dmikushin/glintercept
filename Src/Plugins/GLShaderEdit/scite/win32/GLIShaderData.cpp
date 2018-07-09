@@ -136,7 +136,7 @@ bool GLIShaderData::Init(HINSTANCE hInstance, HWND parentWnd, SciTEBase *newScit
   initData.lpData = NULL;
 
   //Send the message and time out if not responded to in 3 seconds
-  DWORD result;
+  DWORD_PTR result;
   if(!::SendMessageTimeout(testWnd, WM_COPYDATA, 
                            reinterpret_cast<WPARAM>(dataInstance->dialogWindow), reinterpret_cast<LPARAM>(&initData),
                            SMTO_NORMAL, 3000, &result))
@@ -510,7 +510,7 @@ bool GLIShaderData::SendGLIMessage(uint cmdID, const SString &message, bool gliR
   }
 
   //Send the message and time out if not responded to in 3 seconds
-  DWORD result;
+  DWORD_PTR result;
   if(!::SendMessageTimeout(gliWindow, WM_COPYDATA, 
                            reinterpret_cast<WPARAM>(dialogWindow), reinterpret_cast<LPARAM>(&sendData),
                            SMTO_NORMAL, 3000, &result))
