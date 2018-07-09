@@ -18,7 +18,7 @@ using namespace std;
 uint commandIndex = 1;
 
 //Callback for the shader dialog
-BOOL CALLBACK ShaderDialogMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK ShaderDialogMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 //The single instance of the shader data dialog
 GLIShaderData *dataInstance = NULL;
@@ -933,7 +933,7 @@ bool GLIShaderData::GetListItem(uint rowNum, HWND listBox, ListItemData &listDat
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-BOOL CALLBACK ShaderDialogMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ShaderDialogMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
   //Process the message
   switch (message) 

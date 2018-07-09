@@ -32,7 +32,7 @@
 #include "..\\..\\..\\..\\MainLib\\GLDefines.h"
 
 //Callback for the shader debug dialog
-BOOL CALLBACK ShaderDebugMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK ShaderDebugMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 //The single instance of the shader debug interface
 GLIShaderDebug *debugInstance = NULL;
@@ -627,7 +627,7 @@ void GLIShaderDebug::AddVariableMatrixDisplay(CPropTreeItemGLI* pRoot, const Uni
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-BOOL CALLBACK ShaderDebugMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ShaderDebugMsg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
   //Process the message
   switch (message) 
