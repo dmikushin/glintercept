@@ -91,6 +91,14 @@ SString::SString(unsigned int i) : sizeGrowth(sizeGrowthDefault) {
 	sSize = sLen = (s) ? strlen(s) : 0;
 }
 
+// GLI uint version
+SString::SString(void* p) : sizeGrowth(sizeGrowthDefault) {
+	char number[sizeof(void*) * 8];
+	sprintf(number, "%p", p);
+	s = StringAllocate(number);
+	sSize = sLen = (s) ? strlen(s) : 0;
+}
+
 
 SString::SString(double d, int precision) : sizeGrowth(sizeGrowthDefault) {
 	char number[32];

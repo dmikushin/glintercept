@@ -158,7 +158,8 @@ public:
 		sSize = sLen = (s) ? last - first : 0;
 	}
 	SString(int i);
-  SString(unsigned int i);
+	SString(unsigned int i);
+	SString(void* p);
 	SString(double d, int precision);
 	~SString() {
 		sLen = 0;

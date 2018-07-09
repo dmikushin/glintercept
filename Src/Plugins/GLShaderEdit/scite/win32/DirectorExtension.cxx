@@ -72,7 +72,7 @@ static void SendDirector(const char *verb, const char *arg = 0) {
 	}
 }
 
-static void SendDirector(const char *verb, sptr_t arg) {
+static void SendDirector(const char *verb, void* arg) {
 	SString s(arg);
 	::SendDirector(verb, s.c_str());
 }
@@ -85,12 +85,12 @@ static void CheckEnvironment(ExtensionAPI *host) {
 				startedByDirector = true;
 				wDirector = reinterpret_cast<HWND>(atoi(director));
 				// Director is just seen so identify this to it
-				::SendDirector("identity", reinterpret_cast<sptr_t>(wReceiver));
+				::SendDirector("identity", reinterpret_cast<void*>(wReceiver));
 			}
 			delete []director;
 		}
-		char number[32];
-		sprintf(number, "%0d", reinterpret_cast<int>(wReceiver));
+		char number[sizeof(void*) * 8];
+		sprintf(number, "%0p", reinterpret_cast<void*>(wReceiver));
 		host->SetProperty("WindowID", number);
 	}
 }
