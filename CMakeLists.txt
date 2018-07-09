@@ -24,7 +24,12 @@
 
 cmake_minimum_required(VERSION 2.6)
 
-if ("${CMAKE_GENERATOR}" MATCHES "(Win64)")
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetArch.cmake)
+
+target_architecture(ARCH)
+message(STATUS "Target architecture is \"${ARCH}\"")
+
+if (${ARCH} STREQUAL "x86_64")
 enable_language(ASM_MASM)
 endif()
 
@@ -39,8 +44,10 @@ project(GLIntercept)
 set(CMAKE_BUILD_TYPE Debug)
 #set(CMAKE_BUILD_TYPE Release)
 
+if (${ARCH} STREQUAL "x86_64")
 # Find Python interpreter
 find_package(PythonInterp REQUIRED)
+endif()
 
 set(COMMON_SOURCES 
 	Src/Common/ConfigParser.cpp
@@ -97,7 +104,7 @@ file(GLOB_RECURSE CORONA_SOURCES
 	"3rdParty/corona/src/*.c"
 	"3rdParty/corona/src/*.cpp")
 
-if ("${CMAKE_GENERATOR}" MATCHES "(Win64)")
+if (${ARCH} STREQUAL "x86_64")
 
 set(GENERATED_SOURCES
 	${CMAKE_CURRENT_BINARY_DIR}/ExtensionFunctionStubs_64.asm)
@@ -384,8 +391,21 @@ else()
 target_link_libraries(GLISciTE scintilla glslang wxstedit wxWidgets)
 endif()
 
+if (WIN32)
+if (${ARCH} STREQUAL "i386")
+target_compile_definitions(GLISciTE PUBLIC SCITE_MANIFEST="SciTE.exe.x86.manifest")
 add_custom_command(TARGET GLISciTE
 	POST_BUILD COMMAND
-	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\Src\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.manifest\" -outputresource:\"$<TARGET_FILE:GLISciTE>\"\;\#1
+	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\Src\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.x86.manifest\" -outputresource:\"$<TARGET_FILE:GLISciTE>\"\;\#1
 	COMMENT "Adding custom manifest file...")
+elseif (${ARCH} STREQUAL "x86_64")
+target_compile_definitions(GLISciTE PUBLIC SCITE_MANIFEST="SciTE.exe.x64.manifest")
+add_custom_command(TARGET GLISciTE
+	POST_BUILD COMMAND
+	"mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\Src\\Plugins\\GLShaderEdit\\scite\\win32\\SciTE.exe.x64.manifest\" -outputresource:\"$<TARGET_FILE:GLISciTE>\"\;\#1
+	COMMENT "Adding custom manifest file...")
+else()
+message(FATAL_ERROR "Unsupported target architecture \"${ARCH}\"")
+endif()
+endif()
 

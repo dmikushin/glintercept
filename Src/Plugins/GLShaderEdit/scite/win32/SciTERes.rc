@@ -12,7 +12,7 @@
 
 SciTE ICON SciBall.ico
 
-1 RT_MANIFEST SciTE.exe.manifest
+1 RT_MANIFEST SCITE_MANIFEST
 
 SciTE MENU
 BEGIN
