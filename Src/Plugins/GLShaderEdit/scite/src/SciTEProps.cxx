@@ -1351,7 +1351,7 @@ void SciTEBase::ReadPropertiesInitial() {
 #if PLAT_WIN
 
 	if (tabMultiLine) {	// Windows specific!
-		long wl = ::GetWindowLong(reinterpret_cast<HWND>(wTabBar.GetID()), GWL_STYLE);
+		long wl = ::GetWindowLongPtr(reinterpret_cast<HWND>(wTabBar.GetID()), GWL_STYLE);
 		::SetWindowLong(reinterpret_cast<HWND>(wTabBar.GetID()), GWL_STYLE, wl | TCS_MULTILINE);
 	}
 #endif

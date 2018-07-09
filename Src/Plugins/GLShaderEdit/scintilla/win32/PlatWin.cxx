@@ -1601,7 +1601,7 @@ long PASCAL ListBoxX::ControlWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 		return 0;
 	}
 
-	WNDPROC prevWndProc = reinterpret_cast<WNDPROC>(GetWindowLong(hWnd, GWL_USERDATA));
+	WNDPROC prevWndProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	if (prevWndProc) {
 		return ::CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam);
 	} else {
@@ -1623,8 +1623,8 @@ long ListBoxX::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 				reinterpret_cast<HMENU>(ctrlID),
 				hinstanceParent,
 				0);
-			WNDPROC prevWndProc = reinterpret_cast<WNDPROC>(::SetWindowLong(lb, GWL_WNDPROC, reinterpret_cast<LONG>(ControlWndProc)));
-			::SetWindowLong(lb, GWL_USERDATA, reinterpret_cast<LONG>(prevWndProc));
+			WNDPROC prevWndProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtr(lb, GWLP_WNDPROC, reinterpret_cast<LONG>(ControlWndProc)));
+			::SetWindowLongPtr(lb, GWLP_USERDATA, reinterpret_cast<LONG>(prevWndProc));
 		}
 		break;
 

@@ -19,7 +19,7 @@ inline BOOL IsIconic( HWND WXUNUSED(hWnd) )
 {
     // Probably not right...
 #if 0
-    long style = GetWindowLong(hWnd, GWL_STYLE);
+    long style = GetWindowLongPtr(hWnd, GWLP_STYLE);
     return ((style & WS_MINIMIZE) == 0);
 #endif
     return FALSE;

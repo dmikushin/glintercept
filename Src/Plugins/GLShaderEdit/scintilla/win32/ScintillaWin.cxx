@@ -2227,7 +2227,7 @@ sptr_t PASCAL ScintillaWin::CTWndProc(
 		}
 	} else {
 		if (iMessage == WM_NCDESTROY) {
-			::SetWindowLong(hWnd, 0, 0);
+			::SetWindowLongPtr(hWnd, 0, 0);
 			return ::DefWindowProc(hWnd, iMessage, wParam, lParam);
 		} else if (iMessage == WM_PAINT) {
 			PAINTSTRUCT ps;
@@ -2297,7 +2297,7 @@ sptr_t PASCAL ScintillaWin::SWndProc(
 		if (iMessage == WM_NCDESTROY) {
 			sci->Finalise();
 			delete sci;
-			::SetWindowLong(hWnd, 0, 0);
+			::SetWindowLongPtr(hWnd, 0, 0);
 			return ::DefWindowProc(hWnd, iMessage, wParam, lParam);
 		} else {
 			return sci->WndProc(iMessage, wParam, lParam);
