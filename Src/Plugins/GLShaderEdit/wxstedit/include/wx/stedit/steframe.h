@@ -99,7 +99,7 @@ public:
 
 #ifdef GLI_CHANGES
     
-    virtual void CreateOptions(const wxSTEditorOptions& options, long gliWindowHandle);
+    virtual void CreateOptions(const wxSTEditorOptions& options, void* gliWindowHandle);
 
 #else //GLI_CHANGES
 

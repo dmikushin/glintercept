@@ -188,7 +188,7 @@ void wxSTEditorFrame::SetSendSTEEvents(bool send)
 
 #ifdef GLI_CHANGES
     
-void wxSTEditorFrame::CreateOptions(const wxSTEditorOptions& options, long gliWindowHandle)
+void wxSTEditorFrame::CreateOptions(const wxSTEditorOptions& options, void* gliWindowHandle)
 
 #else //GLI_CHANGES
 

@@ -60,7 +60,7 @@ GLIShaderData::~GLIShaderData()
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-bool GLIShaderData::Init(wxSTEditorFrame *newSte, long gliWindowHandle)
+bool GLIShaderData::Init(wxSTEditorFrame *newSte, void* gliWindowHandle)
 {
   //If already init, return false;
   if(dataInstance != NULL)
@@ -301,7 +301,7 @@ void GLIShaderData::RevertShader(uint currShaderUID, const wxString &revertFileN
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-bool GLIShaderData::OpenGLIConnection(long gliWindowHandle)
+bool GLIShaderData::OpenGLIConnection(void* gliWindowHandle)
 {
   //Check the initial handle
   if(gliWindowHandle == 0)

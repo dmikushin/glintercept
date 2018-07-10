@@ -25,7 +25,7 @@ public:
   //  Returns:
   //    If initialization was successful, true is returned. Else false is returned.
   //
-  static bool Init(wxSTEditorFrame *newSte, long gliWindowHandle);
+  static bool Init(wxSTEditorFrame *newSte, void* gliWindowHandle);
 
   //@
   //  Summary:
@@ -195,7 +195,7 @@ protected:
   //  Returns:
   //    Returns true on connect success, false on failure.
   //
-  bool OpenGLIConnection(long gliWindowHandle);
+  bool OpenGLIConnection(void* gliWindowHandle);
 
   //@
   //  Summary:
