@@ -526,11 +526,11 @@ void wxSTEditorPrefDialogPageStyles::FillStyleEditor(wxSTEditor* editor)
 
     size_t n = 0, count = 0;
     wxArrayInt langStyles;
-    int lang_n = -1;
+    size_t lang_n = (size_t)-1;
 
     if (steLangs.Ok() && m_langChoice->IsShown() && (m_langChoice->GetSelection() != 0))
     {
-        lang_n = (long)m_langChoice->GetClientData(m_langChoice->GetSelection());
+        lang_n = (size_t)m_langChoice->GetClientData(m_langChoice->GetSelection());
         count = steLangs.GetStyleCount(lang_n);
         for (n = 0; n < count; n++)
         {
@@ -1094,7 +1094,7 @@ void wxSTEditorPrefDialogPageLangs::GetControlValues()
     wxSTEditorLangs steLangs(GetPrefData().GetLangs());
     steLangs.SetUserFilePattern(GetPrefData().GetLanguageId(), m_filepatternTextCtrl->GetValue());
 
-    int ste_style = (long)m_styleChoice->GetClientData(m_styleChoice->GetSelection());
+    size_t ste_style = (size_t)m_styleChoice->GetClientData(m_styleChoice->GetSelection());
     steLangs.SetUserSTEStyle(m_current_lang, m_current_style_n, ste_style);
 
     if ((m_keyword_n >= 0) && (m_keyword_n < (int)steLangs.GetKeyWordsCount(m_current_lang)))
@@ -1209,11 +1209,11 @@ void wxSTEditorPrefDialogPageLangs::OnMarginClick(wxStyledTextEvent &event)
 
 void wxSTEditorPrefDialogPageLangs::SetStylesChoice()
 {
-    int ste_style = GetPrefData().GetLangs().GetSTEStyle(m_current_lang, m_current_style_n);
+    size_t ste_style = GetPrefData().GetLangs().GetSTEStyle(m_current_lang, m_current_style_n);
     int n, count = m_styleChoice->GetCount();
     for (n = 0; n < count; n++)
     {
-        if (long(m_styleChoice->GetClientData(n)) == ste_style)
+        if ((size_t)m_styleChoice->GetClientData(n) == ste_style)
         {
             m_styleChoice->SetSelection(n);
             break;

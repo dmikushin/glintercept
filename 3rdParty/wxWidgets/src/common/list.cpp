@@ -661,9 +661,9 @@ wxStringList::wxStringList (const wxChar *first, ...)
       s = va_arg(ap, const wxChar *);
       //    if (s == NULL)
 #ifdef __WXMSW__
-      if ((int)(long) s == 0)
+      if ((int)(ptrdiff_t) s == 0)
 #else
-      if ((long) s == 0)
+      if ((ptrdiff_t) s == 0)
 #endif
           break;
   }

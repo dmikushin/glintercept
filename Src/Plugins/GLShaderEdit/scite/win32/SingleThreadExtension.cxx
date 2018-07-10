@@ -47,7 +47,7 @@ bool SingleThreadExtension::Initialise(ExtensionAPI *host_) {
 		0, 0, 0, 0, 0, 0, 0, GetModuleHandle(NULL), 0
 	);
 
-	LONG subclassedProc = SetWindowLongPtr(hwndDispatcher, GWLP_WNDPROC, reinterpret_cast<LONG>(WndProc));
+	LONG_PTR subclassedProc = SetWindowLongPtr(hwndDispatcher, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WndProc));
 	SetWindowLongPtr(hwndDispatcher, GWLP_USERDATA, subclassedProc);
 
 	return ext->Initialise(host_);

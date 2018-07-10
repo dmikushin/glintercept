@@ -86,7 +86,7 @@ BOOL CALLBACK EnumChildProc(HWND hwndCtrl, LPARAM lParam)
     ti.cbSize = sizeof(TOOLINFO); 
     ti.uFlags = TTF_IDISHWND; 
     ti.hwnd = dialogWnd; 
-    ti.uId = (UINT) hwndCtrl; 
+    ti.uId = (UINT_PTR) hwndCtrl; 
     ti.hinst = 0; 
     ti.lpszText = LPSTR_TEXTCALLBACK; 
     SendMessage(toolTipWnd, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti); 

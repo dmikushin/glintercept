@@ -277,7 +277,7 @@ void SciTEWin::ExecuteOtherHelp(const char *cmd) {
 			::WinHelp(MainHWND(),
 			          path,
 			          HELP_KEY,
-			          reinterpret_cast<unsigned long>(topic));
+			          reinterpret_cast<ULONG_PTR>(topic));
 		}
 	}
 	delete []topic;

@@ -533,8 +533,8 @@ void wxControlContainer::HandleOnWindowDestroy(wxWindowBase *child)
 
 bool wxControlContainer::DoSetFocus()
 {
-    wxLogTrace(_T("focus"), _T("SetFocus on wxPanel 0x%08lx."),
-               (unsigned long)m_winParent->GetHandle());
+    wxLogTrace(_T("focus"), _T("SetFocus on wxPanel 0x%08p."),
+               (void*)m_winParent->GetHandle());
 
     if (m_inSetFocus)
         return true;
@@ -574,8 +574,8 @@ bool wxControlContainer::DoSetFocus()
 
 void wxControlContainer::HandleOnFocus(wxFocusEvent& event)
 {
-    wxLogTrace(_T("focus"), _T("OnFocus on wxPanel 0x%08lx, name: %s"),
-               (unsigned long)m_winParent->GetHandle(),
+    wxLogTrace(_T("focus"), _T("OnFocus on wxPanel 0x%08p, name: %s"),
+               (void*)m_winParent->GetHandle(),
                m_winParent->GetName().c_str() );
 
     DoSetFocus();
@@ -605,8 +605,8 @@ bool wxSetFocusToChild(wxWindow *win, wxWindow **childLastFocused)
         if ( (*childLastFocused)->GetParent() == win )
         {
             wxLogTrace(_T("focus"),
-                       _T("SetFocusToChild() => last child (0x%08lx)."),
-                       (unsigned long)(*childLastFocused)->GetHandle());
+                       _T("SetFocusToChild() => last child (0x%08p)."),
+                       (void*)(*childLastFocused)->GetHandle());
 
             // not SetFocusFromKbd(): we're restoring focus back to the old
             // window and not setting it as the result of a kbd action
@@ -641,8 +641,8 @@ bool wxSetFocusToChild(wxWindow *win, wxWindow **childLastFocused)
 #endif
 
             wxLogTrace(_T("focus"),
-                       _T("SetFocusToChild() => first child (0x%08lx)."),
-                       (unsigned long)child->GetHandle());
+                       _T("SetFocusToChild() => first child (0x%08p)."),
+                       (void*)child->GetHandle());
 
             *childLastFocused = child;
             child->SetFocusFromKbd();
