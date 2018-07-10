@@ -141,7 +141,7 @@ private:
     static wxHelpProvider *ms_helpProvider;
 };
 
-WX_DECLARE_EXPORTED_HASH_MAP( long, wxString, wxIntegerHash, wxIntegerEqual,
+WX_DECLARE_EXPORTED_HASH_MAP( long long, wxString, wxIntegerHash, wxIntegerEqual,
                               wxLongToStringHashMap );
 
 // wxSimpleHelpProvider is an implementation of wxHelpProvider which supports

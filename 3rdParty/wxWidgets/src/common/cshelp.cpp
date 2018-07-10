@@ -336,7 +336,7 @@ wxHelpProvider::~wxHelpProvider()
 
 wxString wxSimpleHelpProvider::GetHelp(const wxWindowBase *window)
 {
-    wxLongToStringHashMap::iterator it = m_hashWindows.find((long)window);
+    wxLongToStringHashMap::iterator it = m_hashWindows.find((long long)window);
 
     if ( it == m_hashWindows.end() )
     {
@@ -350,8 +350,8 @@ wxString wxSimpleHelpProvider::GetHelp(const wxWindowBase *window)
 
 void wxSimpleHelpProvider::AddHelp(wxWindowBase *window, const wxString& text)
 {
-    m_hashWindows.erase((long)window);
-    m_hashWindows[(long)window] = text;
+    m_hashWindows.erase((long long)window);
+    m_hashWindows[(long long)window] = text;
 }
 
 void wxSimpleHelpProvider::AddHelp(wxWindowID id, const wxString& text)
@@ -364,7 +364,7 @@ void wxSimpleHelpProvider::AddHelp(wxWindowID id, const wxString& text)
 // removes the association
 void wxSimpleHelpProvider::RemoveHelp(wxWindowBase* window)
 {
-    m_hashWindows.erase((long)window);
+    m_hashWindows.erase((long long)window);
 }
 
 bool wxSimpleHelpProvider::ShowHelp(wxWindowBase *window)
