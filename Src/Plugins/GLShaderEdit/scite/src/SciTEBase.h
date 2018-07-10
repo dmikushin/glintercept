@@ -467,9 +467,9 @@ protected:
 	Window wTabBar;
 	Menu popup;
 	SciFnDirect fnEditor;
-	long ptrEditor;
+	sptr_t ptrEditor;
 	SciFnDirect fnOutput;
-	long ptrOutput;
+	sptr_t ptrOutput;
 	bool tbVisible;
 	bool tabVisible;
 	bool tabHideOne; // Hide tab bar if one buffer is opened only
