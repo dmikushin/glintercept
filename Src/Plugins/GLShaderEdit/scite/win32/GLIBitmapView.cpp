@@ -1,5 +1,3 @@
-#define WINVER 0x0501 
-
 #include <afxwin.h>
 #include <afxext.h>
 

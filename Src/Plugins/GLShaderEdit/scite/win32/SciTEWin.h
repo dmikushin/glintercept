@@ -19,10 +19,9 @@
 
 
 #ifdef __MINGW_H
-#define _WIN32_IE	0x0400
+#define _WIN32_IE	WINVER
 #endif
 
-#define _WIN32_WINNT  0x0400
 #ifdef _MSC_VER
 // windows.h, et al, use a lot of nameless struct/unions - can't fix it, so allow it
 #pragma warning(disable: 4201)
